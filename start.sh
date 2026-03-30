@@ -1,0 +1,1 @@
+gunicorn loan_project.wsgi:application
