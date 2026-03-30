@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Prediction Tool</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 720px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #1a3c6d;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .result-box {
+            margin-top: 35px;
+            padding: 25px;
+            background-color: #e8f5ff;
+            border-left: 5px solid #3498db;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        .result-box h3 {
+            margin-top: 0;
+            color: #1a3c6d;
+        }
+        .result-item {
+            margin: 15px 0;
+            font-size: 1.15em;
+        }
+        .result-item strong {
+            color: #2c3e50;
+        }
+        .bank-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f0f8ff;
+            border-radius: 8px;
+            border: 1px solid #d1e7ff;
+        }
+        .bank-category {
+            font-weight: bold;
+            font-size: 1.15em;
+            color: #1a3c6d;
+            margin: 25px 0 10px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+        }
+        .bank-item {
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+        .bank-name {
+            color: #0066cc;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .bank-name:hover {
+            text-decoration: underline;
+        }
+        .bank-note {
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 5px;
+        }
+        .error {
+            background-color: #ffebee;
+            color: #c0392b;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+        .debug {
+            margin-top: 30px;
+            padding: 15px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 0.9em;
+            color: #555;
+        }
+        @media (max-width: 600px) {
+            body { padding: 15px; margin: 20px auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Loan Prediction Tool</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" value="35" required min="18" max="90">
+        </div>
+
+        <div class="form-group">
+            <label for="annual_income">Annual Income (₹):</label>
+            <input type="number" id="annual_income" name="annual_income" value="60000" required min="10000">
+        </div>
+
+        <div class="form-group">
+            <label for="employment_status">Employment Status:</label>
+            <select id="employment_status" name="employment_status" required>
+                <option value="Employed">Employed</option>
+                <option value="Self-employed">Self-employed</option>
+                <option value="Unemployed">Unemployed</option>
+                <option value="Retired">Retired</option>
+                <option value="Student">Student</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="credit_score">Credit Score:</label>
+            <input type="number" id="credit_score" name="credit_score" value="720" required min="300" max="850">
+        </div>
+
+        <div class="form-group">
+            <label for="loan_amount">Requested Loan Amount (₹):</label>
+            <input type="number" id="loan_amount" name="loan_amount" value="15000" required min="1000">
+        </div>
+
+        <div class="form-group">
+            <label for="loan_purpose">Loan Purpose:</label>
+            <select id="loan_purpose" name="loan_purpose" required>
+                <option value="Debt consolidation">Debt Consolidation</option>
+                <option value="Personal">Personal Loan</option>
+                <option value="Home">Home Loan</option>
+                <option value="Business">Business Loan</option>
+                <option value="Car">Car Loan</option>
+                <option value="Medical">Medical / Emergency Loan</option>
+                <option value="Education">Education Loan</option>
+                <option value="Wedding">Wedding / Marriage Loan</option>
+                <option value="Gold">Gold Loan</option>
+                <option value="Two Wheeler">Two-Wheeler Loan</option>
+                <option value="Consumer Durable">Consumer Durable Loan</option>
+                <option value="Loan Against Property">Loan Against Property</option>
+                <option value="Other">Other / General Loan</option>
+            </select>
+        </div>
+
+        <button type="submit">Get Prediction</button>
+    </form>
+
+    {% if error %}
+        <div class="error">
+            <strong>Error:</strong> {{ error }}
+        </div>
+    {% endif %}
+
+    {% if result %}
+        <div class="result-box">
+            <h3>Prediction Results</h3>
+
+            {% if result.probability_of_paying_back is not None %}
+                <div class="result-item">
+                    <strong>Probability of paying back:</strong> 
+                    {{ result.probability_of_paying_back }} %
+                </div>
+            {% endif %}
+
+            {% if result.predicted_monthly_installment is not None %}
+                <div class="result-item">
+                    <strong>Predicted monthly installment:</strong> 
+                    ₹ {{ result.predicted_monthly_installment }}
+                </div>
+            {% endif %}
+
+            {% if result.predicted_interest_rate_percent is not None %}
+                <div class="result-item">
+                    <strong>Predicted interest rate:</strong> 
+                    {{ result.predicted_interest_rate_percent }} %
+                </div>
+            {% endif %}
+
+            {% if result.predicted_loan_term_months is not None %}
+                <div class="result-item">
+                    <strong>Predicted loan term:</strong> 
+                    {{ result.predicted_loan_term_months }} months
+                </div>
+            {% endif %}
+
+            <!-- Bank Recommendation Section -->
+            <hr style="margin: 30px 0 20px;">
+            <h3>Find the Best Bank for Your Loan</h3>
+
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="get_bank_recommendation">
+
+                <div class="form-group">
+                    <label for="loan_purpose">Loan Purpose:</label>
+                    <select name="loan_purpose" id="loan_purpose" required>
+                        <option value="Personal">Personal Loan</option>
+                        <option value="Home">Home Loan</option>
+                        <option value="Business">Business Loan</option>
+                        <option value="Car">Car Loan</option>
+                        <option value="Debt consolidation">Debt Consolidation Loan</option>
+                        <option value="Medical">Medical / Emergency Loan</option>
+                        <option value="Education">Education Loan</option>
+                        <option value="Wedding">Wedding / Marriage Loan</option>
+                        <option value="Gold">Gold Loan</option>
+                        <option value="Two Wheeler">Two-Wheeler Loan</option>
+                        <option value="Consumer Durable">Consumer Durable Loan</option>
+                        <option value="Loan Against Property">Loan Against Property</option>
+                        <option value="Other">Other / General Loan</option>
+                    </select>
+                </div>
+
+                <button type="submit">Show Best Banks</button>
+            </form>
+
+            {% if show_bank_recommendation %}
+                <div style="margin-top: 25px; padding: 20px; background: #f0f8ff; border-radius: 8px; border: 1px solid #d1e7ff;">
+                    <h4>Recommended Banks for {{ selected_loan_purpose }} Loan (March 2026)</h4>
+
+                    {% if bank_recommendations %}
+                        <div class="bank-list">
+                            <div class="bank-category">Best / Lowest Rate & Most Reliable:</div>
+                            {% for bank in bank_recommendations.best_banks %}
+                                <div class="bank-item">
+                                    <a href="{{ bank_recommendations.best_link }}" target="_blank" class="bank-name">
+                                        {{ bank }}
+                                    </a>
+                                </div>
+                            {% endfor %}
+
+                            <div class="bank-category">Next Best / Very Competitive:</div>
+                            {% for bank in bank_recommendations.next_banks %}
+                                <div class="bank-item">
+                                    <a href="{{ bank_recommendations.next_link }}" target="_blank" class="bank-name">
+                                        {{ bank }}
+                                    </a>
+                                </div>
+                            {% endfor %}
+
+                            <div class="bank-category">Also Good / Worth Considering:</div>
+                            {% for bank in bank_recommendations.good_banks %}
+                                <div class="bank-item">
+                                    <a href="{{ bank_recommendations.good_link }}" target="_blank" class="bank-name">
+                                        {{ bank }}
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p>No specific recommendation available yet for this loan type.</p>
+                    {% endif %}
+
+                    <p style="font-size: 0.9em; color: #555; margin-top: 20px;">
+                        <strong>Important:</strong> Rates shown are indicative floating rates for good credit profiles (CIBIL 750+). 
+                        Actual rate, processing fees (0.5%–2.5%), eligibility, tenure and documents depend on your profile and bank policy. 
+                        Click bank names to visit official websites. Always compare latest offers directly from banks or aggregators like BankBazaar / Paisabazaar.
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+    
+    {% endif %}
+
+</body>
+</html>
