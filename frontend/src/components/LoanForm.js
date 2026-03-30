@@ -59,7 +59,7 @@ function LoanForm() {
         if (files[key]) formData.append(key, files[key]);
       });
 
-      const res = await fetch("http://127.0.0.1:8000/predict/", {
+      const res = await fetch("https://loan-backend.onrender.com/predict/", {
         method: "POST",
         credentials: "include",
         body: formData,
@@ -177,8 +177,7 @@ function LoanForm() {
             {/* PDF */}
             <button
               style={styles.pdfButton}
-              onClick={() => window.open("http://127.0.0.1:8000/download-report/")}
-            >
+              onClick={() => window.open("https://loan-backend.onrender.com/download-report/")}>
               Download Report
             </button>
 

@@ -100,12 +100,10 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://your-frontend.vercel.app",   # 🔁 replace after deploy
+    "https://your-frontend-domain.vercel.app"
 ]
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-    "https://your-frontend.vercel.app",   # 🔁 replace after deploy
+CSRF_TRUSTED_ORIGINS = ["https://loan-backend-fy3w.onrender.com/"
 ]
 
 # ✅ SESSION (IMPORTANT FOR LOGIN)
