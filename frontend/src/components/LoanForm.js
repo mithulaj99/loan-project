@@ -59,9 +59,8 @@ function LoanForm() {
         if (files[key]) formData.append(key, files[key]);
       });
 
-      const res = await fetch("https://loan-backend.onrender.com/predict/", {
+      const res = await fetch("https://loan-backend-fy3w.onrender.com/predict/", {
         method: "POST",
-        credentials: "include",
         body: formData,
       });
 
@@ -177,7 +176,8 @@ function LoanForm() {
             {/* PDF */}
             <button
               style={styles.pdfButton}
-              onClick={() => window.open("https://loan-backend.onrender.com/download-report/")}>
+              onClick={() => window.open("https://loan-backend-fy3w.onrender.com/download-report/")}
+            >
               Download Report
             </button>
 
