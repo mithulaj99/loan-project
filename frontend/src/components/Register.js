@@ -9,35 +9,52 @@ function Register() {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleRegister = async (e) => {
-
     e.preventDefault();
+
+    if (!username || !password) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    setLoading(true);
 
     try {
 
       const res = await axios.post(
-        "http://localhost:8000/api/register/",
+        "http://127.0.0.1:8000/register/",   // ✅ FIXED URL
         {
-          username,
-          password
+          username: username,
+          password: password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          }
         }
       );
 
-      alert(res.data.message);
+      alert(res.data.message || "Registration successful");
 
       navigate("/");
 
     } catch (error) {
 
+      console.error("Register error:", error);
+
       if (error.response) {
-        alert(error.response.data.error);
+        alert(error.response.data.error || "Registration failed");
+      } else if (error.request) {
+        alert("No response from backend");
       } else {
-        alert("Backend not reachable");
+        alert("Error: " + error.message);
       }
 
     }
 
+    setLoading(false);
   };
 
   return (
@@ -66,12 +83,14 @@ function Register() {
             required
           />
 
-          <button type="submit">Register</button>
+          <button type="submit" disabled={loading}>
+            {loading ? "Registering..." : "Register"}
+          </button>
 
         </form>
 
         <p>
-          Already have an account?  
+          Already have an account?{" "}
           <Link to="/">Login</Link>
         </p>
 

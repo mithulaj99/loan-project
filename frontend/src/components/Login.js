@@ -13,8 +13,6 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    console.log("Login button clicked"); // 🔍 DEBUG
-
     if (!username || !password) {
       alert("Please enter username and password");
       return;
@@ -24,7 +22,7 @@ function Login() {
 
     try {
       const res = await axios.post(
-        "http://127.0.0.1:8000/login/",   // ✅ CORRECT URL
+        "http://127.0.0.1:8000/login/",   // ✅ REST API URL
         {
           username: username,
           password: password,
@@ -32,12 +30,10 @@ function Login() {
         {
           headers: {
             "Content-Type": "application/json",
-          },
-          withCredentials: true,
+          }
+          // ❌ REMOVED withCredentials
         }
       );
-
-      console.log("Response:", res.data); // 🔍 DEBUG
 
       if (res.status === 200) {
         alert(res.data.message || "Login successful");
@@ -45,7 +41,7 @@ function Login() {
       }
 
     } catch (error) {
-      console.error("Error:", error); // 🔍 DEBUG
+      console.error("Error:", error);
 
       if (error.response) {
         alert(error.response.data.error || "Invalid credentials");
