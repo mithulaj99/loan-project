@@ -92,7 +92,7 @@ function LoanForm() {
       } else {
         setResult(data);
       }
-    } catch (err) {
+    } catch {
       setError("Server not reachable");
     }
 
@@ -117,63 +117,74 @@ function LoanForm() {
       <div style={styles.card}>
         <h2 style={styles.heading}>Loan Prediction System</h2>
 
+        {/* DOCUMENT SECTION */}
         <div style={styles.section}>
-          <p style={styles.sectionTitle}>Upload Documents</p>
+          <p style={styles.sectionTitle}>Upload Required Documents</p>
 
-          <label>Identity Proof</label>
-          <select
-            name="identity_type"
-            onChange={handleDocTypeChange}
-            style={styles.input}
-          >
-            <option>Aadhaar Card</option>
-            <option>Voter ID</option>
-            <option>Passport</option>
-          </select>
-          <input
-            type="file"
-            name="identity_file"
-            onChange={handleFileChange}
-          />
+          {/* Identity */}
+          <div style={styles.group}>
+            <label style={styles.label}>Identity Proof</label>
+            <select
+              name="identity_type"
+              onChange={handleDocTypeChange}
+              style={styles.input}
+            >
+              <option>Aadhaar Card</option>
+              <option>Voter ID</option>
+              <option>Passport</option>
+            </select>
+            <input
+              type="file"
+              name="identity_file"
+              onChange={handleFileChange}
+            />
+          </div>
 
-          <label style={{ marginTop: 10 }}>Income Proof</label>
-          <select
-            name="income_type"
-            onChange={handleDocTypeChange}
-            style={styles.input}
-            disabled={!files.identity_file}
-          >
-            <option>Bank Statement (6 months)</option>
-            <option>Salary Slips (3 months)</option>
-          </select>
-          <input
-            type="file"
-            name="income_file"
-            onChange={handleFileChange}
-            disabled={!files.identity_file}
-          />
+          {/* Income */}
+          <div style={styles.group}>
+            <label style={styles.label}>Income Proof</label>
+            <select
+              name="income_type"
+              onChange={handleDocTypeChange}
+              style={styles.input}
+              disabled={!files.identity_file}
+            >
+              <option>Bank Statement (6 months)</option>
+              <option>Salary Slips (3 months)</option>
+            </select>
+            <input
+              type="file"
+              name="income_file"
+              onChange={handleFileChange}
+              disabled={!files.identity_file}
+            />
+          </div>
 
-          <label style={{ marginTop: 10 }}>Address Proof</label>
-          <select
-            name="address_type"
-            onChange={handleDocTypeChange}
-            style={styles.input}
-            disabled={!files.income_file}
-          >
-            <option>Ration Card</option>
-            <option>Electricity Bill</option>
-            <option>Rental Agreement</option>
-          </select>
-          <input
-            type="file"
-            name="address_file"
-            onChange={handleFileChange}
-            disabled={!files.income_file}
-          />
+          {/* Address */}
+          <div style={styles.group}>
+            <label style={styles.label}>Address Proof</label>
+            <select
+              name="address_type"
+              onChange={handleDocTypeChange}
+              style={styles.input}
+              disabled={!files.income_file}
+            >
+              <option>Ration Card</option>
+              <option>Electricity Bill</option>
+              <option>Rental Agreement</option>
+            </select>
+            <input
+              type="file"
+              name="address_file"
+              onChange={handleFileChange}
+              disabled={!files.income_file}
+            />
+          </div>
         </div>
 
+        {/* FORM INPUTS */}
         <div style={styles.section}>
-          <p style={styles.sectionTitle}>Enter Details</p>
+          <p style={styles.sectionTitle}>Enter Loan Details</p>
 
           <input style={styles.input} type="number" placeholder="Age" name="age" onChange={handleChange} />
           <input style={styles.input} type="number" placeholder="Annual Income" name="annual_income" onChange={handleChange} />
@@ -196,12 +207,15 @@ function LoanForm() {
           <input style={styles.input} type="number" placeholder="Loan Term (months)" name="loan_term" onChange={handleChange} />
         </div>
 
+        {/* BUTTON */}
         <button style={styles.button} onClick={handleSubmit}>
           {loading ? "Predicting..." : "Predict Loan"}
         </button>
 
+        {/* ERROR */}
         {error && <p style={styles.error}>{error}</p>}
 
+        {/* RESULT */}
         {result && (
           <div style={styles.resultBox}>
             <h3>Prediction Result</h3>
@@ -265,8 +279,10 @@ const styles = {
     boxShadow: "0 5px 20px rgba(0,0,0,0.2)",
   },
   heading: { textAlign: "center", marginBottom: 15 },
-  section: { marginBottom: 15 },
-  sectionTitle: { fontWeight: "bold", marginBottom: 5 },
+  section: { marginBottom: 20 },
+  sectionTitle: { fontWeight: "bold", marginBottom: 10 },
+  group: { marginBottom: 15 },
+  label: { display: "block", marginBottom: 5 },
   input: {
     width: "100%",
     padding: 8,
