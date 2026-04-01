@@ -53,12 +53,10 @@ function LoanForm() {
     setError("");
     setResult(null);
 
-    // ✅ FILE VALIDATION
     if (!files.identity_file) return setError("Upload Identity Proof first");
     if (!files.income_file) return setError("Upload Income Proof");
     if (!files.address_file) return setError("Upload Address Proof");
 
-    // ✅ FORM VALIDATION
     const validationError = validateForm();
     if (validationError) return setError(validationError);
 
@@ -67,17 +65,14 @@ function LoanForm() {
     try {
       const formData = new FormData();
 
-      // form fields
       Object.keys(form).forEach((key) =>
         formData.append(key, form[key])
       );
 
-      // document types
       Object.keys(docType).forEach((key) =>
         formData.append(key, docType[key])
       );
 
-      // files
       formData.append("identity_file", files.identity_file);
       formData.append("income_file", files.income_file);
       formData.append("address_file", files.address_file);
@@ -122,11 +117,9 @@ function LoanForm() {
       <div style={styles.card}>
         <h2 style={styles.heading}>Loan Prediction System</h2>
 
-        {/* DOCUMENT SECTION */}
         <div style={styles.section}>
           <p style={styles.sectionTitle}>Upload Documents</p>
 
-          {/* Identity */}
           <label>Identity Proof</label>
           <select
             name="identity_type"
@@ -143,7 +136,6 @@ function LoanForm() {
             onChange={handleFileChange}
           />
 
-          {/* Income */}
           <label style={{ marginTop: 10 }}>Income Proof</label>
           <select
             name="income_type"
@@ -161,7 +153,6 @@ function LoanForm() {
             disabled={!files.identity_file}
           />
 
-          {/* Address */}
           <label style={{ marginTop: 10 }}>Address Proof</label>
           <select
             name="address_type"
@@ -181,7 +172,6 @@ function LoanForm() {
           />
         </div>
 
-        {/* FORM INPUTS */}
         <div style={styles.section}>
           <p style={styles.sectionTitle}>Enter Details</p>
 
@@ -206,15 +196,12 @@ function LoanForm() {
           <input style={styles.input} type="number" placeholder="Loan Term (months)" name="loan_term" onChange={handleChange} />
         </div>
 
-        {/* BUTTON */}
         <button style={styles.button} onClick={handleSubmit}>
           {loading ? "Predicting..." : "Predict Loan"}
         </button>
 
-        {/* ERROR */}
         {error && <p style={styles.error}>{error}</p>}
 
-        {/* RESULT */}
         {result && (
           <div style={styles.resultBox}>
             <h3>Prediction Result</h3>
@@ -224,7 +211,6 @@ function LoanForm() {
             <p><b>Term:</b> {result.predicted_loan_term_months} months</p>
             <p><b>EMI:</b> ₹{result.predicted_monthly_installment}</p>
 
-            {/* BEST BANK */}
             <div style={styles.bestBank}>
               <h4>🏆 Best Bank</h4>
               <img src={result.best_bank.logo} alt="" style={styles.logo} />
@@ -234,7 +220,6 @@ function LoanForm() {
               <p>{result.best_bank.interest_rate}%</p>
             </div>
 
-            {/* BANK LIST */}
             <h4>All Bank Options</h4>
             {result.bank_recommendation.map((bank, i) => (
               <div key={i} style={styles.bankCard}>
@@ -246,11 +231,9 @@ function LoanForm() {
               </div>
             ))}
 
-            {/* CHART */}
             <h4>Interest Comparison</h4>
             <Bar data={chartData} />
 
-            {/* PDF */}
             <button
               style={styles.pdfButton}
               onClick={() =>

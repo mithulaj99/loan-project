@@ -22,7 +22,7 @@ function Login() {
 
     try {
       const res = await axios.post(
-        "http://127.0.0.1:8000/login/",   // ✅ REST API URL
+        "https://loan-backend-fy3w.onrender.com/login/",   // ✅ FIXED URL
         {
           username: username,
           password: password,
@@ -31,7 +31,6 @@ function Login() {
           headers: {
             "Content-Type": "application/json",
           }
-          // ❌ REMOVED withCredentials
         }
       );
 

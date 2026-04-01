@@ -24,7 +24,7 @@ function Register() {
     try {
 
       const res = await axios.post(
-        "http://127.0.0.1:8000/register/",   // ✅ FIXED URL
+        "https://loan-backend-fy3w.onrender.com/register/",   // ✅ FIXED URL
         {
           username: username,
           password: password,
